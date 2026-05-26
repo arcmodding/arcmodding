@@ -6,7 +6,6 @@
 let balance       = 250.00;
 
 saveGame();
-
 let inventory     = [];
 
 // ===== 1 WEEK SAVE SYSTEM =====
