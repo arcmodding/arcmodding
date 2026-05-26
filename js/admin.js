@@ -1,6 +1,5 @@
-// Simple demo owner/admin system
 const OWNER_USER = "owner";
-const OWNER_PASS = "darktag123"; // change this
+const OWNER_PASS = "charliekirk8";
 
 let user = JSON.parse(localStorage.getItem("vaultUser")) || {
     loggedIn: false,
