@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VaultDrop — Premium Case Opening</title>
+  <meta name="description" content="Open cases, win big. Provably fair case opening platform with instant crypto withdrawals." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">VAULT<span>DROP</span><em>.GG</em></a>
+
+      <div class="nav-center">
+        <button class="nav-link active" data-tab="cases">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+          Cases
+        </button>
+        <button class="nav-link" data-tab="battles">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 9H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5S16.33 9 15.5 9z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8H3.5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 15H10v-1.5C10 12.67 9.33 12 8.5 12S7 12.67 7 13.5 7.67 15 8.5 15z"/></svg>
+          Battles
+        </button>
+        <button class="nav-link" data-tab="upgrade">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          Upgrade
+        </button>
+        <button class="nav-link" data-tab="inventory">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Inventory <span class="inv-badge" id="inv-badge" style="display:none">0</span>
+        </button>
+      </div>
+
+      <div class="nav-right">
+        <div class="live-ticker" id="live-ticker">
+          <span class="ticker-dot"></span>
+          <span id="ticker-text">Loading...</span>
+        </div>
+        <div class="balance-wrap">
+          <div class="balance-display">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+            <span id="balance-display">250.00</span>
+          </div>
+          <button class="deposit-btn" onclick="addFunds()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Deposit
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ===== CASES TAB ===== -->
+    <section id="tab-cases" class="tab-section active">
+
+      <!-- HERO -->
+      <div class="hero-banner">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            PROVABLY FAIR
+          </div>
+          <h1>Open Cases.<br /><span>Win Big.</span></h1>
+          <p>The world's most trusted case opening platform.<br/>Instant crypto payouts. No house edge tricks.</p>
+          <div class="hero-cta">
+            <button class="btn-primary" onclick="scrollToCases()">Browse Cases</button>
+            <button class="btn-ghost" onclick="showTab('battles')">View Battles</button>
+          </div>
+        </div>
+        <div class="hero-stats" id="hero-stats">
+          <div class="hstat">
+            <div class="hstat-val" id="stat-paidout">$0</div>
+            <div class="hstat-label">Paid Out Today</div>
+          </div>
+          <div class="hstat-divider"></div>
+          <div class="hstat">
+            <div class="hstat-val" id="stat-opened">0</div>
+            <div class="hstat-label">Cases Opened</div>
+          </div>
+          <div class="hstat-divider"></div>
+          <div class="hstat">
+            <div class="hstat-val" id="stat-uptime">0%</div>
+            <div class="hstat-label">Uptime</div>
+          </div>
+          <div class="hstat-divider"></div>
+          <div class="hstat">
+            <div class="hstat-val" id="stat-online">0</div>
+            <div class="hstat-label">Online Now</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED CASES -->
+      <div class="section-row" id="cases-anchor">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Featured Cases
+          </h2>
+          <div class="sort-tabs">
+            <button class="sort-tab active">All</button>
+            <button class="sort-tab">Under $10</button>
+            <button class="sort-tab">Popular</button>
+            <button class="sort-tab">New</button>
+          </div>
+        </div>
+        <div class="cases-grid" id="cases-grid"></div>
+      </div>
+
+      <!-- LIVE FEED -->
+      <div class="section-row">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="live-dot-inline"></span>
+            Live Drops
+          </h2>
+          <span class="feed-count" id="feed-count">0 drops today</span>
+        </div>
+        <div class="live-feed-wrap">
+          <div class="live-feed-header">
+            <span>Player</span>
+            <span>Item</span>
+            <span>Case</span>
+            <span>Value</span>
+            <span>Time</span>
+          </div>
+          <div id="live-feed"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===== BATTLES TAB ===== -->
+    <section id="tab-battles" class="tab-section">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-icon">⚔️</div>
+        <h2>Case Battles</h2>
+        <p>Challenge other players in real-time case battles.<br/>First to the highest value wins the pot.</p>
+        <div class="coming-soon-features">
+          <div class="csf-item"><span>🎯</span> 1v1 & 2v2 Modes</div>
+          <div class="csf-item"><span>💰</span> Winner Takes All</div>
+          <div class="csf-item"><span>🔴</span> Live Spectating</div>
+          <div class="csf-item"><span>📊</span> Battle History</div>
+        </div>
+        <button class="btn-primary" style="margin-top:24px">Notify Me When Live</button>
+      </div>
+    </section>
+
+    <!-- ===== UPGRADE TAB ===== -->
+    <section id="tab-upgrade" class="tab-section">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-icon">🔁</div>
+        <h2>Item Upgrader</h2>
+        <p>Risk your items for a chance at something much more valuable.<br/>Set your own odds. Own your risk.</p>
+        <div class="coming-soon-features">
+          <div class="csf-item"><span>📈</span> Custom Risk Levels</div>
+          <div class="csf-item"><span>🔐</span> Provably Fair</div>
+          <div class="csf-item"><span>⚡</span> Instant Results</div>
+          <div class="csf-item"><span>🏆</span> Leaderboard</div>
+        </div>
+        <button class="btn-primary" style="margin-top:24px">Coming Soon</button>
+      </div>
+    </section>
+
+    <!-- ===== INVENTORY TAB ===== -->
+    <section id="tab-inventory" class="tab-section">
+      <div class="section-row">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            My Inventory
+          </h2>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span id="inv-total-val" style="color:var(--muted);font-size:13px"></span>
+            <button class="btn-danger-sm" onclick="sellAllInventory()">Sell All</button>
+          </div>
+        </div>
+        <div class="inv-filter-bar">
+          <button class="inv-filter active" onclick="filterInv('all',this)">All</button>
+          <button class="inv-filter" onclick="filterInv('legendary',this)">⭐ Legendary</button>
+          <button class="inv-filter" onclick="filterInv('epic',this)">💜 Epic</button>
+          <button class="inv-filter" onclick="filterInv('rare',this)">🔵 Rare</button>
+          <button class="inv-filter" onclick="filterInv('common',this)">🟢 Common</button>
+        </div>
+        <div class="inv-grid" id="inv-grid">
+          <div class="inv-empty" id="inv-empty">
+            <div style="font-size:48px;margin-bottom:12px">🎒</div>
+            <div style="font-weight:700;font-size:16px;margin-bottom:6px;color:var(--text)">Inventory Empty</div>
+            <div style="font-size:13px">Open some cases and keep your winnings here</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CASE OPENING MODAL -->
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal-box" id="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span id="modal-case-emoji" style="font-size:28px"></span>
+          <div>
+            <div class="modal-title" id="modal-title">Opening Case</div>
+            <div class="modal-subtitle" id="modal-subtitle">Spin the wheel and test your luck</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-body">
+
+        <!-- SPINNER STATE -->
+        <div id="state-spinner">
+          <div class="spinner-outer">
+            <div class="spinner-fade-left"></div>
+            <div class="spinner-fade-right"></div>
+            <div class="spinner-cursor">
+              <div class="cursor-arrow top"></div>
+              <div class="cursor-line"></div>
+              <div class="cursor-arrow bottom"></div>
+            </div>
+            <div class="spinner-viewport">
+              <div class="spinner-track" id="spinner-track"></div>
+            </div>
+          </div>
+
+          <div class="open-controls">
+            <div class="open-info">
+              <div class="open-info-item">
+                <span class="info-label">Case Price</span>
+                <span class="info-val accent" id="ctrl-price">$0.00</span>
+              </div>
+              <div class="open-info-item">
+                <span class="info-label">Your Balance</span>
+                <span class="info-val" id="ctrl-balance">$0.00</span>
+              </div>
+              <div class="open-info-item">
+                <span class="info-label">Best Drop</span>
+                <span class="info-val gold" id="ctrl-best">$0.00</span>
+              </div>
+            </div>
+            <div class="open-qty-row">
+              <span style="font-size:13px;color:var(--muted)">Quantity:</span>
+              <div class="qty-btns">
+                <button class="qty-btn active" data-qty="1" onclick="setQty(1,this)">x1</button>
+                <button class="qty-btn" data-qty="2" onclick="setQty(2,this)">x2</button>
+                <button class="qty-btn" data-qty="3" onclick="setQty(3,this)">x3</button>
+                <button class="qty-btn" data-qty="5" onclick="setQty(5,this)">x5</button>
+              </div>
+            </div>
+            <button class="open-main-btn" id="open-btn" onclick="spinCase()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              OPEN CASE
+            </button>
+            <div class="provably-fair-link">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Provably Fair
+            </div>
+          </div>
+
+          <div class="possible-drops">
+            <div class="drops-header">
+              <span>Possible Drops</span>
+              <span class="drops-odds-note">Odds shown per item</span>
+            </div>
+            <div class="drops-grid" id="drops-grid"></div>
+          </div>
+        </div>
+
+        <!-- WIN STATE -->
+        <div id="state-win" style="display:none">
+          <div class="win-confetti" id="win-confetti"></div>
+          <div class="win-showcase">
+            <div class="win-item-glow" id="win-glow"></div>
+            <div class="win-emoji-large" id="win-emoji">🎁</div>
+            <div class="win-rarity-badge" id="win-rarity-badge">Legendary</div>
+            <div class="win-item-name" id="win-item-name">Item Name</div>
+            <div class="win-item-value" id="win-item-value">$0.00</div>
+          </div>
+          <div class="win-actions">
+            <button class="win-btn sell" onclick="sellWin()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Sell for <span id="sell-amount">$0.00</span>
+            </button>
+            <button class="win-btn keep" onclick="keepWin()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              Keep Item
+            </button>
+            <button class="win-btn again" onclick="openAgain()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Open Again
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
