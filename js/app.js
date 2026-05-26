@@ -5,13 +5,6 @@
 // ---- STATE ----
 let balance       = 250.00;
 let inventory     = [];
-let currentCase   = null;
-let currentWin    = null;
-let openQty       = 1;
-let spinning      = false;
-let feedCount     = 0;
-let feedDrops     = 0;
-let tickerTimeout = null;
 
 // ===== 1 WEEK SAVE SYSTEM =====
 
@@ -40,6 +33,14 @@ localStorage.setItem(SAVE_CHOICE,"nosave");
 }
 
 },500);
+
+let currentCase   = null;
+let currentWin    = null;
+let openQty       = 1;
+let spinning      = false;
+let feedCount     = 0;
+let feedDrops     = 0;
+let tickerTimeout = null;
 
 }
 
