@@ -6,6 +6,7 @@
 let balance       = 250.00;
 
 saveGame();
+
 let inventory     = [];
 
 // ===== 1 WEEK SAVE SYSTEM =====
@@ -532,6 +533,9 @@ function sellWin() {
 function keepWin() {
   if (!currentWin) return;
   inventory.push({ ...currentWin, uid: Date.now() + Math.random() });
+
+  saveGame();  
+
   updateInvBadge();
   toast(`${currentWin.name} added to inventory!`, 'success');
   closeModal();
