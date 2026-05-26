@@ -13,6 +13,83 @@ let feedCount     = 0;
 let feedDrops     = 0;
 let tickerTimeout = null;
 
+// ===== 1 WEEK SAVE SYSTEM =====
+
+const SAVE_KEY = "vaultdropSave";
+const SAVE_CHOICE = "vaultdropChoice";
+
+function sevenDaysFromNow() {
+    return Date.now() + (7*24*60*60*1000);
+}
+
+// ask player only once
+if(localStorage.getItem(SAVE_CHOICE) === null){
+
+setTimeout(()=>{
+
+const save = confirm(
+"We will keep your inventory and money for 1 week.\n\nPress OK = Accept\nPress Cancel = Continue without saving"
+);
+
+if(save){
+localStorage.setItem(SAVE_CHOICE,"accepted");
+saveGame();
+}
+else{
+localStorage.setItem(SAVE_CHOICE,"nosave");
+}
+
+},500);
+
+}
+
+
+// load save
+function loadGame(){
+
+if(localStorage.getItem(SAVE_CHOICE)!=="accepted") return;
+
+const data=JSON.parse(
+localStorage.getItem(SAVE_KEY)
+);
+
+if(!data) return;
+
+if(Date.now()>data.expires){
+
+localStorage.removeItem(SAVE_KEY);
+
+return;
+}
+
+balance=data.balance || 250;
+inventory=data.inventory || [];
+
+}
+
+
+// save game
+function saveGame(){
+
+if(localStorage.getItem(SAVE_CHOICE)!=="accepted") return;
+
+const data={
+
+balance:balance,
+inventory:inventory,
+expires:sevenDaysFromNow()
+
+};
+
+localStorage.setItem(
+SAVE_KEY,
+JSON.stringify(data)
+);
+
+}
+
+loadGame();
+
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
   generateHeroStats();
