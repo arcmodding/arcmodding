@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ARC Modding</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ARC Modding Hub</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
 
@@ -19,7 +18,7 @@ scroll-behavior:smooth;
 }
 
 body{
-background:#0b0b0b;
+background:#080808;
 color:white;
 overflow-x:hidden;
 }
@@ -28,65 +27,77 @@ overflow-x:hidden;
 
 .bg{
 position:fixed;
-width:100%;
-height:100%;
-z-index:-1;
+inset:0;
+z-index:-2;
+
 background:
-radial-gradient(circle at 20% 20%,#00ff8850,transparent 30%),
-radial-gradient(circle at 80% 50%,#00aaff40,transparent 30%),
-radial-gradient(circle at 40% 90%,#15ff0050,transparent 25%);
+radial-gradient(circle at 10% 20%,rgba(0,255,136,.35),transparent 20%),
+radial-gradient(circle at 80% 20%,rgba(0,132,255,.25),transparent 25%),
+radial-gradient(circle at 50% 90%,rgba(0,255,85,.2),transparent 30%);
+
 filter:blur(90px);
-animation:move 10s infinite alternate;
+
+animation:float 12s infinite alternate;
 }
 
-@keyframes move{
+@keyframes float{
 
-0%{
-transform:scale(1) rotate(0deg);
+from{
+transform:scale(1) rotate(0deg)
 }
 
-100%{
-transform:scale(1.3) rotate(10deg);
+to{
+transform:scale(1.4) rotate(8deg)
 }
 
 }
 
 nav{
+
 position:fixed;
 top:0;
 width:100%;
-padding:20px 8%;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
 
-background:rgba(20,20,20,.5);
-backdrop-filter:blur(15px);
+padding:20px 8%;
 
-border-bottom:1px solid rgba(255,255,255,.06);
+background:rgba(15,15,15,.55);
 
-z-index:1000;
+backdrop-filter:blur(20px);
+
+border-bottom:1px solid rgba(255,255,255,.05);
+
+z-index:999;
 }
 
 .logo{
+
 font-size:30px;
 font-weight:900;
-letter-spacing:2px;
+
 }
 
 .logo span{
 color:#00ff88;
 }
 
-nav a{
+nav div a{
+
 color:white;
 text-decoration:none;
 margin-left:25px;
-opacity:.8;
+opacity:.7;
+transition:.3s;
 }
 
-nav a:hover{
+nav div a:hover{
+
 opacity:1;
+color:#00ff88;
+
 }
 
 /* hero */
@@ -98,51 +109,60 @@ height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-text-align:center;
+
 padding:30px;
+
 }
 
 .heroBox{
 
-background:rgba(255,255,255,.05);
+max-width:900px;
 
-backdrop-filter:blur(20px);
+padding:65px;
 
-padding:60px;
+text-align:center;
+
+background:rgba(255,255,255,.04);
+
+backdrop-filter:blur(25px);
 
 border-radius:35px;
 
-max-width:900px;
-
-border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.06);
 
 box-shadow:
-0 0 40px rgba(0,255,136,.15);
+0 0 45px rgba(0,255,136,.18);
 
 }
 
 .hero h1{
 
-font-size:80px;
+font-size:85px;
+
+line-height:.9;
+
 font-weight:900;
-line-height:.95;
 
 }
 
-.hero span{
+.hero h1 span{
 color:#00ff88;
 }
 
 .hero p{
 
 margin-top:25px;
-opacity:.75;
+
 line-height:1.8;
+
+opacity:.7;
+
+font-size:18px;
 
 }
 
 .buttons{
-margin-top:35px;
+margin-top:40px;
 }
 
 .btn{
@@ -151,7 +171,7 @@ display:inline-block;
 
 padding:15px 35px;
 
-border-radius:50px;
+border-radius:999px;
 
 text-decoration:none;
 
@@ -160,31 +180,42 @@ margin:8px;
 transition:.3s;
 }
 
-.main{
+.download{
 
 background:#00ff88;
+
 color:black;
-font-weight:bold;
+
+font-weight:700;
+
 }
 
-.second{
+.discord{
 
-border:1px solid rgba(255,255,255,.25);
+border:1px solid rgba(255,255,255,.2);
+
 color:white;
+
 }
 
 .btn:hover{
-transform:translateY(-5px);
+
+transform:translateY(-8px);
+
 }
 
-section{
+/* cards */
 
+section{
 padding:100px 8%;
 }
 
 .title{
+
 font-size:45px;
+
 margin-bottom:50px;
+
 }
 
 .grid{
@@ -194,7 +225,7 @@ display:grid;
 grid-template-columns:
 repeat(auto-fit,minmax(280px,1fr));
 
-gap:25px;
+gap:30px;
 
 }
 
@@ -202,13 +233,14 @@ gap:25px;
 
 padding:35px;
 
-background:rgba(255,255,255,.04);
+border-radius:30px;
 
-border-radius:25px;
+background:rgba(255,255,255,.04);
 
 backdrop-filter:blur(20px);
 
 transition:.4s;
+
 }
 
 .card:hover{
@@ -216,7 +248,7 @@ transition:.4s;
 transform:translateY(-10px);
 
 box-shadow:
-0 0 30px rgba(0,255,136,.15);
+0 0 35px rgba(0,255,136,.2);
 
 }
 
@@ -226,15 +258,38 @@ margin-bottom:15px;
 
 }
 
+.downloadCard{
+
+margin-top:25px;
+
+display:inline-block;
+
+padding:12px 30px;
+
+background:#00ff88;
+
+color:black;
+
+font-weight:bold;
+
+border-radius:999px;
+
+text-decoration:none;
+
+}
+
 footer{
 
 padding:50px;
+
 text-align:center;
-opacity:.5;
+
+opacity:.45;
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -244,53 +299,67 @@ opacity:.5;
 <nav>
 
 <div class="logo">
-ARC<span>.</span>
+ARC<span>MODDING</span>
 </div>
 
 <div>
 
 <a href="#">Home</a>
+
 <a href="#mods">Mods</a>
+
 <a href="#downloads">Downloads</a>
-<a href="#">Discord</a>
+
+<a href="https://discord.gg/arcsmoddinghub" target="_blank">Discord</a>
 
 </div>
 
 </nav>
 
-<div class="hero">
+<section class="hero">
 
 <div class="heroBox">
 
 <h1>
+
 GORILLA TAG<br>
-<span>MODDING</span>
+
+<span>MOD HUB</span>
+
 </h1>
 
 <p>
 
-Community mods, custom cosmetics,
-tutorials, downloads, and projects.
+Community Gorilla Tag copy modding, cosmetics, tutorials,
+downloads and projects.
 
 </p>
 
 <div class="buttons">
 
-<a class="btn main"
-href="#">
+<a
+class="btn download"
+href="downloads/ARCMenuV1.zip"
+download>
+
 DOWNLOAD
+
 </a>
 
-<a class="btn second"
-href="#">
+<a
+class="btn discord"
+href="https://discord.gg/arcsmoddinghub"
+target="_blank">
+
 JOIN DISCORD
+
 </a>
 
 </div>
 
 </div>
 
-</div>
+</section>
 
 <section id="mods">
 
@@ -307,7 +376,9 @@ Custom Cosmetics
 </h2>
 
 <p>
-Add hats, effects and accessories.
+
+New hats, materials, effects and community items.
+
 </p>
 
 </div>
@@ -315,11 +386,13 @@ Add hats, effects and accessories.
 <div class="card">
 
 <h2>
-Mod Menu
+Mod Menus
 </h2>
 
 <p>
-Download community-made Gorilla Tag mods.
+
+Latest Gorilla Tag menu releases.
+
 </p>
 
 </div>
@@ -331,7 +404,9 @@ Tutorials
 </h2>
 
 <p>
-Learn Unity and Gorilla Tag modding.
+
+Learn modding and Unity setup.
+
 </p>
 
 </div>
@@ -355,13 +430,18 @@ ARC Menu V1
 </h2>
 
 <p>
-Latest release available now.
+
+Newest release available.
+
 </p>
 
-<br>
+<a
+class="downloadCard"
+href="downloads/ARCMenuV1.zip"
+download>
 
-<a class="btn main" href="#">
 Download
+
 </a>
 
 </div>
