@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GT Copy Mods — Gorilla Tag Modding Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a08;
+      --surface: #111210;
+      --card: #161714;
+      --border: #2a2c28;
+      --green: #4eff6a;
+      --lime: #b8ff3c;
+      --orange: #ff6b2b;
+      --text: #d4d6cf;
+      --muted: #6b6e64;
+      --white: #f0f2eb;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ---- NOISE OVERLAY ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ---- SCANLINE ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.07) 2px,
+        rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10,10,8,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--green);
+      text-shadow: 0 0 18px rgba(78,255,106,0.4);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--lime); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    .nav-badge {
+      background: var(--green);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 2rem 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(78,255,106,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78,255,106,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--green);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 15vw, 13rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      position: relative;
+    }
+
+    .hero-title .accent { color: var(--green); }
+    .hero-title .line2 {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--border);
+    }
+    .hero-title .line2:hover {
+      -webkit-text-stroke-color: var(--lime);
+      transition: -webkit-text-stroke-color 0.3s;
+    }
+
+    .hero-sub {
+      margin-top: 2.5rem;
+      max-width: 540px;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .hero-sub strong { color: var(--text); }
+
+    .hero-ctas {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: var(--lime);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--orange);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .hero-stat-row {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat { }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--green);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ---- TICKER ---- */
+    .ticker-wrap {
+      background: var(--green);
+      overflow: hidden;
+      padding: 10px 0;
+    }
+
+    .ticker {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      color: #000;
+      padding: 0 2rem;
+    }
+
+    .ticker-item::after {
+      content: '//';
+      margin-left: 2rem;
+      opacity: 0.4;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ---- SECTION LAYOUT ---- */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: 0.02em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    /* ---- MOD CARDS ---- */
+    .mods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .mod-card {
+      background: var(--card);
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s;
+    }
+
+    .mod-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--green);
+      transition: height 0.3s;
+    }
+
+    .mod-card:hover { background: #1c1e1a; }
+    .mod-card:hover::before { height: 100%; }
+
+    .mod-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      margin-bottom: 1rem;
+      border: 1px solid;
+    }
+
+    .tag-copy { border-color: var(--green); color: var(--green); }
+    .tag-skin { border-color: var(--lime); color: var(--lime); }
+    .tag-map { border-color: var(--orange); color: var(--orange); }
+    .tag-cosmetic { border-color: #8b9eff; color: #8b9eff; }
+
+    .mod-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .mod-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+
+    .mod-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .mod-dl {
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .mod-dl:hover { text-decoration: underline; }
+
+    /* ---- HOW TO ---- */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      counter-increment: steps;
+      position: relative;
+      padding-left: 1.5rem;
+      border-left: 1px solid var(--border);
+    }
+
+    .step::before {
+      content: '0' counter(steps);
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .step:hover { border-left-color: var(--green); }
+    .step:hover::before { color: var(--green); }
+
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .step-text code {
+      background: var(--surface);
+      color: var(--lime);
+      padding: 1px 5px;
+      font-size: 0.7rem;
+    }
+
+    /* ---- TERMINAL BLOCK ---- */
+    .terminal {
+      background: #0d0f0c;
+      border: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      margin: 3rem 0;
+      position: relative;
+    }
+
+    .terminal::before {
+      content: '● ● ●';
+      position: absolute;
+      top: 0.75rem;
+      left: 1rem;
+      font-size: 0.5rem;
+      color: var(--muted);
+      letter-spacing: 0.3em;
+    }
+
+    .terminal-body {
+      padding-top: 1rem;
+      font-size: 0.78rem;
+      line-height: 2;
+    }
+
+    .t-prompt { color: var(--green); }
+    .t-cmd { color: var(--white); }
+    .t-comment { color: var(--muted); }
+    .t-out { color: var(--lime); }
+
+    /* ---- FAQ ---- */
+    .faq-list {
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 0;
+      cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      user-select: none;
+    }
+
+    .faq-q:hover { color: var(--green); }
+
+    .faq-icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      color: var(--green);
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.9;
+      transition: max-height 0.35s ease, padding 0.25s;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding-bottom: 1.25rem;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: var(--green);
+      letter-spacing: 0.1em;
+    }
+
+    /* ---- GITHUB BUTTON ---- */
+    .github-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 1.2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .github-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(78,255,106,0.04);
+    }
+
+    .github-icon { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ---- WARNING BANNER ---- */
+    .warn-banner {
+      background: rgba(255,107,43,0.08);
+      border: 1px solid rgba(255,107,43,0.3);
+      padding: 1rem 1.5rem;
+      font-size: 0.72rem;
+      color: var(--orange);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .warn-banner strong { color: #ff8c5a; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 640px) {
+      .hero-stat-row { gap: 1.5rem; flex-wrap: wrap; }
+      .nav-links { display: none; }
+    }
+
+    /* ---- GLOW CURSOR ---- */
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(78,255,106,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-glow" id="glow"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">GT<span>Copy</span>Mods</a>
+  <ul class="nav-links">
+    <li><a href="#mods">Mods</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li>
+      <a href="https://github.com/YOUR-USERNAME/gt-copy-mods" target="_blank" class="github-btn">
+        <svg class="github-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </li>
+  </ul>
+  <span class="nav-badge">Open Source</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <p class="hero-eyebrow">Gorilla Tag Modding Community</p>
+  <h1 class="hero-title">
+    <span class="accent">COPY</span><br>
+    <span class="line2">MODS</span>
+  </h1>
+  <p class="hero-sub">
+    A community-built archive of <strong>copy mods</strong> for Gorilla Tag — skins, maps, cosmetics, and scripts. 
+    Everything is open source, peer-reviewed, and hosted on GitHub. 
+    No sketchy installers. No account required.
+  </p>
+  <div class="hero-ctas">
+    <a href="#mods" class="btn btn-primary">Browse Mods</a>
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods" target="_blank" class="btn btn-outline">View on GitHub</a>
+  </div>
+  <div class="hero-stat-row">
+    <div class="stat">
+      <div class="stat-num">120+</div>
+      <div class="stat-label">Copy Mods</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">34</div>
+      <div class="stat-label">Contributors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">v2.1</div>
+      <div class="stat-label">Latest Version</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Free Forever</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">GORILLA TAG</span>
+    <span class="ticker-item">COPY MODS</span>
+    <span class="ticker-item">OPEN SOURCE</span>
+    <span class="ticker-item">BEPINEX MODS</span>
+    <span class="ticker-item">SKINS & MAPS</span>
+    <span class="ticker-item">COMMUNITY BUILT</span>
+    <span class="ticker-item">NO VIRUSES</span>
+    <span class="ticker-item">PC & QUEST</span>
+    <span class="ticker-item">GORILLA TAG</span>
+    <span class="ticker-item">COPY MODS</span>
+    <span class="ticker-item">OPEN SOURCE</span>
+    <span class="ticker-item">BEPINEX MODS</span>
+    <span class="ticker-item">SKINS & MAPS</span>
+    <span class="ticker-item">COMMUNITY BUILT</span>
+    <span class="ticker-item">NO VIRUSES</span>
+    <span class="ticker-item">PC & QUEST</span>
+  </div>
+</div>
+
+<!-- MODS SECTION -->
+<section id="mods">
+  <p class="section-label">// Mod Archive</p>
+  <h2 class="section-title">Available Copy Mods</h2>
+  <p class="section-desc">
+    Hand-curated list of working copy mods. Click any GitHub link to grab the latest release or inspect the source code yourself.
+  </p>
+
+  <div class="warn-banner">
+    <strong>⚠ DISCLAIMER:</strong> Copy mods replicate cosmetics locally on your client. 
+    Other players won't see your changes unless they also have the mod installed. 
+    Use responsibly — some private lobbies may prohibit mods. 
+    Always scan downloads with VirusTotal before running anything.
+  </div>
+
+  <div class="mods-grid">
+
+    <div class="mod-card">
+      <span class="mod-tag tag-skin">Skin</span>
+      <div class="mod-name">GhostHand Copy</div>
+      <div class="mod-desc">Replicates the GhostHand cosmetic locally. Works on both PC and Quest via sideloading. Includes custom shader pass.</div>
+      <div class="mod-meta">
+        <span>v1.3 · BepInEx 6</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/GhostHand" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <span class="mod-tag tag-copy">Copy</span>
+      <div class="mod-name">SpeedrunBanana</div>
+      <div class="mod-desc">Copies the banana cosmetic hat. Zero performance overhead. Drop-in DLL — no config required.</div>
+      <div class="mod-meta">
+        <span>v1.0 · PC Only</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/SpeedrunBanana" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <span class="mod-tag tag-map">Map</span>
+      <div class="mod-name">ForestCopy V2</div>
+      <div class="mod-desc">Replicates the limited forest map layout. Play offline or in private lobbies with other modded players.</div>
+      <div class="mod-meta">
+        <span>v2.0 · PC Only</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/ForestCopy" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <span class="mod-tag tag-cosmetic">Cosmetic</span>
+      <div class="mod-name">GlowFur Pack</div>
+      <div class="mod-desc">Emissive fur texture swap for all standard gorilla colors. Looks wild in dark maps. PCVR only.</div>
+      <div class="mod-meta">
+        <span>v1.1 · BepInEx 6</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/GlowFur" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <span class="mod-tag tag-skin">Skin</span>
+      <div class="mod-name">SkullHat Copy</div>
+      <div class="mod-desc">Server-side copy of the skull hat cosmetic from the Halloween event. Seasonal looks, year-round.</div>
+      <div class="mod-meta">
+        <span>v1.5 · BepInEx 5+</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/SkullHat" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <span class="mod-tag tag-copy">Copy</span>
+      <div class="mod-name">NeonTag Trails</div>
+      <div class="mod-desc">Adds glowing particle trails when you jump. A copy of a popular private cosmetic pack. Highly configurable.</div>
+      <div class="mod-meta">
+        <span>v1.2 · PC Only</span>
+        <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/tree/main/NeonTrails" target="_blank" class="mod-dl">→ GitHub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:2rem; text-align:right;">
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods" target="_blank" class="btn btn-outline">
+      View All Mods on GitHub →
+    </a>
+  </div>
+</section>
+
+<!-- INSTALL SECTION -->
+<section id="install" style="border-top: 1px solid var(--border);">
+  <p class="section-label">// Installation Guide</p>
+  <h2 class="section-title">How to Install</h2>
+  <p class="section-desc">
+    All mods use BepInEx. Takes about five minutes from scratch.
+    No modded launcher needed — just drag and drop.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-title">Install BepInEx</div>
+      <div class="step-text">
+        Grab BepInEx 6 from the <a href="https://github.com/BepInEx/BepInEx/releases" target="_blank" style="color:var(--lime);">official repo</a>. Extract it into your Gorilla Tag game folder next to <code>GorillaTag.exe</code>.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">Run the Game Once</div>
+      <div class="step-text">
+        Launch Gorilla Tag normally. BepInEx will generate its folder structure including the <code>BepInEx/plugins/</code> folder. Close the game.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">Drop in the DLL</div>
+      <div class="step-text">
+        Download the mod <code>.dll</code> from GitHub Releases. Paste it into <code>BepInEx/plugins/</code>.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-title">Launch and Enjoy</div>
+      <div class="step-text">
+        Start the game. The mod loads automatically. Check <code>BepInEx/LogOutput.log</code> if something looks wrong.
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal">
+    <div class="terminal-body">
+      <div><span class="t-prompt">$</span> <span class="t-cmd">cd "C:\Program Files (x86)\Steam\steamapps\common\Gorilla Tag"</span></div>
+      <div><span class="t-prompt">$</span> <span class="t-cmd">dir BepInEx/plugins/</span></div>
+      <div><span class="t-out">  GhostHandCopy.dll</span></div>
+      <div><span class="t-out">  NeonTrails.dll</span></div>
+      <div><span class="t-comment"># both mods loaded and ready</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/wiki/Installation" target="_blank" class="btn btn-outline">
+      Full Install Docs →
+    </a>
+  </div>
+</section>
+
+<!-- GITHUB SECTION -->
+<section style="border-top: 1px solid var(--border);">
+  <p class="section-label">// Contribute</p>
+  <h2 class="section-title">Open Source Forever</h2>
+  <p class="section-desc">
+    Every mod on this site is hosted on GitHub. Inspect the source, open issues, submit your own copy mods via pull request. 
+    The more contributors the better.
+  </p>
+  <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods" target="_blank" class="btn btn-primary">
+      Star on GitHub ★
+    </a>
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/fork" target="_blank" class="btn btn-outline">
+      Fork & Submit a Mod
+    </a>
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/issues" target="_blank" class="btn btn-outline">
+      Report a Bug
+    </a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="border-top: 1px solid var(--border);">
+  <p class="section-label">// FAQ</p>
+  <h2 class="section-title">Frequently Asked</h2>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q">What is a copy mod? <span class="faq-icon">+</span></div>
+      <div class="faq-a">A copy mod replicates a cosmetic or game element client-side — only you see the change. It doesn't modify game servers or other players' clients. Think of it as a local texture or asset override.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will I get banned? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Copy mods are client-side only and don't give gameplay advantages. However, Gorilla Tag's terms of service prohibit unauthorized modifications. Use in private lobbies with consenting players to stay safe. We take no responsibility for account actions.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do these work on Quest? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Some mods are Quest-compatible via sideloading tools like SideQuest. Each mod card is clearly labeled PC Only or Quest Compatible. Quest support is more limited because BepInEx isn't available on Android builds.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I contribute a mod? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Fork the repo on GitHub, add your mod in its own folder with a README, and open a Pull Request. The maintainers review all submissions for malicious code before merging. Read CONTRIBUTING.md for the full guide.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">My mod isn't loading — what do I check? <span class="faq-icon">+</span></div>
+      <div class="faq-a">First open BepInEx/LogOutput.log and search for errors. Most common issues: wrong BepInEx version (need 6.x for most mods here), .dll placed in the wrong folder, or a game update that changed internal class names. Open a GitHub issue with your log snippet.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">GTCopyMods</div>
+  <div>
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods" target="_blank">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/blob/main/LICENSE" target="_blank">MIT License</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/YOUR-USERNAME/gt-copy-mods/issues" target="_blank">Issues</a>
+  </div>
+  <div>Not affiliated with Another Axiom or Gorilla Tag.</div>
+</footer>
+
+<script>
+  // Cursor glow
+  const glow = document.getElementById('glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Stat counter animation
+  const animateStats = () => {
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const text = el.textContent;
+      const num = parseInt(text);
+      if (isNaN(num)) return;
+      const suffix = text.replace(num, '');
+      let start = 0;
+      const duration = 1200;
+      const step = timestamp => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        el.textContent = Math.floor(progress * num) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  };
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { animateStats(); observer.disconnect(); } });
+  }, { threshold: 0.3 });
+  observer.observe(document.querySelector('.hero-stat-row'));
+</script>
+</body>
+</html>
