@@ -532,9 +532,6 @@ function sellWin() {
 function keepWin() {
   if (!currentWin) return;
   inventory.push({ ...currentWin, uid: Date.now() + Math.random() });
-
-  saveGame(); // ADD THIS LINE
-
   updateInvBadge();
   toast(`${currentWin.name} added to inventory!`, 'success');
   closeModal();
