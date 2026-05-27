@@ -569,3 +569,64 @@ function toast(msg, type = '') {
 const style = document.createElement('style');
 style.textContent = '@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }';
 document.head.appendChild(style);
+
+
+// =============================================
+// LEADERBOARD
+// =============================================
+
+function buildLeaderboard(){
+
+const board=
+document.getElementById(
+"leaderboard-grid"
+);
+
+if(!board)return;
+
+let players=[];
+
+for(let i=0;i<50;i++){
+
+players.push({
+
+name:randomPlayer()+Math.floor(Math.random()*999),
+
+money:
+Math.floor(
+5000+
+Math.random()*5000000
+),
+
+opened:
+Math.floor(
+50+
+Math.random()*10000
+)
+
+});
+
+}
+
+players.sort(
+(a,b)=>b.money-a.money
+);
+
+board.innerHTML=
+players.map((p,i)=>`
+
+<div class="leader-row">
+
+<span>#${i+1}</span>
+
+<span>${p.name}</span>
+
+<span>$${p.money.toLocaleString()}</span>
+
+<span>${p.opened} Opens</span>
+
+</div>
+
+`).join("");
+
+}
