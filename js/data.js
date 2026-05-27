@@ -19,7 +19,7 @@ const ALL_ITEMS = [
   { id: 'gold-bar',     emoji: '🥇', name: 'Gold Bar',         value: 560,  rarity: 'legendary', odds: '0.3%'  },
   { id: 'gem-ring',     emoji: '💍', name: 'Diamond Ring',     value: 420,  rarity: 'legendary', odds: '0.5%'  },
   { id: 'jackpot',      emoji: '🎰', name: 'Jackpot Token',    value: 1000, rarity: 'legendary', odds: '0.1%'  },
-  { id: 'dev shirt',    emoji: '👚', name: 'Developer Shirt', value: 99999999,  rarity: 'Developer', odds: '0.01%'  },
+  { id: 'dev shirt',    emoji: '👚', name: 'Developer Shirt', value: 99999999,  rarity: 'Developer', odds: '00.1%'  },
   // EPIC
   { id: 'crystal',      emoji: '🔮', name: 'Crystal Orb',      value: 95,   rarity: 'epic',      odds: '2.5%'  },
   { id: 'shadow-blade', emoji: '🗡️', name: 'Shadow Blade',    value: 80,   rarity: 'epic',      odds: '3.2%'  },
