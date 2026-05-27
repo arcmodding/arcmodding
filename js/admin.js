@@ -1,85 +1,231 @@
-const OWNER_USER = "owner";
-const OWNER_PASS = "charliekirk8";
+// =============================================
+// ARC MODDING OWNER SYSTEM
+// =============================================
 
-let user = JSON.parse(localStorage.getItem("vaultUser")) || {
-    loggedIn: false,
-    owner: false,
-    money: 250,
-    inventory: []
-};
+const OWNER_USER="owner";
+const OWNER_PASS="darktag123";
 
-function saveUser() {
-    localStorage.setItem("vaultUser", JSON.stringify(user));
+function createLoginBox(){
+
+const box=document.createElement("div");
+
+box.innerHTML=`
+
+<div id="arc-login" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#121212;
+padding:25px;
+border-radius:18px;
+border:2px solid #3b82f6;
+z-index:999999;
+width:300px;
+color:white;
+text-align:center;
+box-shadow:0 0 40px rgba(59,130,246,.4);
+">
+
+<h2>Arc Modding</h2>
+
+<div style="opacity:.7;margin-bottom:15px">
+Owner Login
+</div>
+
+<input
+id="owner-user"
+placeholder="Username"
+style="
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border-radius:8px;
+border:none;
+"
+>
+
+<input
+id="owner-pass"
+type="password"
+placeholder="Password"
+style="
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border-radius:8px;
+border:none;
+"
+>
+
+<button
+onclick="loginOwner()"
+style="
+width:100%;
+padding:12px;
+background:#2563eb;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+"
+>
+
+Login
+
+</button>
+
+</div>
+`;
+
+document.body.appendChild(box);
+
 }
 
-function ownerLogin() {
-    const username = prompt("Username:");
-    const password = prompt("Password:");
+function loginOwner(){
 
-    if (username === OWNER_USER && password === OWNER_PASS) {
-        user.loggedIn = true;
-        user.owner = true;
-        saveUser();
+const u=
+document.getElementById(
+"owner-user"
+).value;
 
-        alert("Owner login successful");
+const p=
+document.getElementById(
+"owner-pass"
+).value;
 
-        showAdminPanel();
-    } else {
-        alert("Wrong login");
-    }
+if(
+u===OWNER_USER &&
+p===OWNER_PASS
+){
+
+localStorage.setItem(
+"arcmoddingOwner",
+"yes"
+);
+
+document
+.getElementById(
+"arc-login"
+)
+.remove();
+
+showOwnerPanel();
+
+toast(
+"Owner Login Success",
+"success"
+);
+
+}else{
+
+toast(
+"Wrong Login",
+"error"
+);
+
 }
 
-function showAdminPanel() {
-    if (!user.owner) return;
-
-    const panel = document.createElement("div");
-
-    panel.style = `
-      position:fixed;
-      top:20px;
-      right:20px;
-      background:#111;
-      color:white;
-      padding:20px;
-      border:1px solid orange;
-      z-index:99999;
-      border-radius:10px;
-    `;
-
-    panel.innerHTML = `
-      <h3>OWNER PANEL</h3>
-
-      <button onclick="giveMoney()">Give $1,000,000</button>
-      <br><br>
-
-      <button onclick="unlockEverything()">Unlock All Items</button>
-    `;
-
-    document.body.appendChild(panel);
 }
 
-function giveMoney() {
-    user.money += 1000000;
-    saveUser();
+function showOwnerPanel(){
 
-    alert("Money added");
+const panel=
+document.createElement("div");
+
+panel.innerHTML=`
+
+<div style="
+position:fixed;
+right:20px;
+top:90px;
+background:#111;
+padding:15px;
+border-radius:15px;
+border:2px solid #3b82f6;
+z-index:999999;
+color:white;
+width:220px;
+">
+
+<h3>OWNER PANEL</h3>
+
+<button onclick="ownerMoney()">
+
+Give $1,000,000
+
+</button>
+
+<br><br>
+
+<button onclick="unlockAll()">
+
+Unlock All Items
+
+</button>
+
+</div>
+`;
+
+document.body.appendChild(panel);
+
 }
 
-function unlockEverything() {
-    user.inventory = [
-        "Gold Rush",
-        "Blue Wave",
-        "Mystic Vault",
-        "Lucky Clover",
-        "Dragon's Hoard",
-        "Shadow Case"
-    ];
+function ownerMoney(){
 
-    saveUser();
+balance+=1000000;
 
-    alert("All items unlocked");
+saveGame();
+
+updateBalance();
+
+toast(
+"$1,000,000 added",
+"gold"
+);
+
 }
 
-if(user.owner){
-   showAdminPanel();
+function unlockAll(){
+
+ALL_ITEMS.forEach(item=>{
+
+inventory.push({
+
+...item,
+
+uid:
+Date.now()+
+Math.random()
+
+});
+
+});
+
+saveGame();
+
+updateInvBadge();
+
+toast(
+"Unlocked Everything",
+"success"
+);
+
 }
+
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+if(
+localStorage.getItem(
+"arcmoddingOwner"
+)==="yes"
+){
+
+showOwnerPanel();
+
+}
+
+}
+);
