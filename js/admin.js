@@ -224,6 +224,87 @@ localStorage.getItem(
 
 showOwnerPanel();
 
+ panel.innerHTML=`
+
+<div style="
+position:fixed;
+right:20px;
+top:90px;
+background:#111;
+padding:15px;
+border-radius:15px;
+border:2px solid #3b82f6;
+z-index:999999;
+color:white;
+width:260px;
+max-height:80vh;
+overflow:auto;
+">
+
+<h2>ARC MODDING OWNER</h2>
+
+<button onclick="ownerMoney()">
+Give $1,000,000
+</button>
+
+<br><br>
+
+<button onclick="ownerMoney10()">
+Give $10,000,000
+</button>
+
+<br><br>
+
+<button onclick="unlockAll()">
+Unlock All Items
+</button>
+
+<br><br>
+
+<button onclick="clearInventory()">
+Clear Inventory
+</button>
+
+<br><br>
+
+<button onclick="maxBalance()">
+MAX MONEY
+</button>
+
+<br><br>
+
+<button onclick="addLegendary()">
+Add Legendary Items
+</button>
+
+<br><br>
+
+<button onclick="open100Cases()">
+Open 100 Cases
+</button>
+
+<br><br>
+
+<button onclick="resetData()">
+Reset Save Data
+</button>
+
+<br><br>
+
+<button onclick="forceSave()">
+Force Save
+</button>
+
+<br><br>
+
+<button onclick="closeOwnerPanel()">
+Close Panel
+</button>
+
+</div>
+
+`; 
+
 }else{
 
 createLoginBox();
