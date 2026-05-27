@@ -2,8 +2,8 @@
 // ARC MODDING OWNER SYSTEM
 // =============================================
 
-const OWNER_USER="owner";
-const OWNER_PASS="darktag123";
+const OWNER_USER="arc";
+const OWNER_PASS="arcandamharetuff";
 
 function createLoginBox(){
 
