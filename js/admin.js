@@ -212,7 +212,6 @@ toast(
 );
 
 }
-
 document.addEventListener(
 "DOMContentLoaded",
 ()=>{
@@ -225,7 +224,10 @@ localStorage.getItem(
 
 showOwnerPanel();
 
-}
+}else{
+
+createLoginBox();
 
 }
-);
+
+});
