@@ -128,6 +128,7 @@ const CASES = [
     bgGradient: 'linear-gradient(135deg, #1a0808, #200505)',
     items: [
       ...itemsByRarity('legendary'),
+      ...itemsByRarity('Developer'),
       ...itemsByRarity('epic').slice(0,4),
       ...itemsByRarity('rare').slice(0,2),
       ...itemsByRarity('common').slice(0,1),
