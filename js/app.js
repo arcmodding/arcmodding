@@ -630,3 +630,269 @@ players.map((p,i)=>`
 `).join("");
 
 }
+// =============================================
+// ARC MODDING EXTRA TABS + LEADERBOARD
+// =============================================
+
+const EXTRA_PLAYERS=[
+
+"DarkVR","Arctic","Ghost","ToxicMonkey","Rawr",
+"Echo","Nova","Deadz","Lime","Shadow",
+"Venom","Pixel","Cryo","Frost","Apex",
+"Hyper","Static","Vortex","Chaos","Storm",
+"Zen","Wraith","Neon","Rage","Orbit",
+"Alpha","Mango","Nexus","Phantom","Titan",
+"Blaze","Krypton","Venix","Riot","Astro",
+"Pulse","Drift","Clutch","Inferno","Volt",
+"Jinx","Cobra","Myst","Cipher","Reaper",
+"DarkTag","Project","Havoc","Oblivion","Arc",
+"Monke","SweatyVR","Lunar","Hollow",
+"Xeno","Bubbles","Spooky","Night","Tundra",
+"Skull","Panda","Frenzy","Turbo","Midas"
+
+];
+
+function randomPlayerName(){
+
+return EXTRA_PLAYERS[
+Math.floor(
+Math.random()*
+EXTRA_PLAYERS.length
+)
+];
+
+}
+
+function buildLeaderboard(){
+
+const board=
+document.getElementById(
+"leaderboard-grid"
+);
+
+if(!board)return;
+
+let players=[];
+
+for(let i=0;i<50;i++){
+
+players.push({
+
+name:
+randomPlayerName()+
+Math.floor(
+Math.random()*999
+),
+
+money:
+Math.floor(
+5000+
+Math.random()*5000000
+),
+
+opened:
+Math.floor(
+50+
+Math.random()*10000
+)
+
+});
+
+}
+
+players.sort(
+(a,b)=>
+b.money-a.money
+);
+
+board.innerHTML=
+players.map((p,i)=>`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:12px;
+margin-bottom:8px;
+background:#111;
+border-radius:10px;
+border:1px solid #222;
+">
+
+<div>
+
+#${i+1}
+&nbsp;&nbsp;
+${p.name}
+
+</div>
+
+<div>
+
+$${p.money.toLocaleString()}
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function loadBattles(){
+
+const el=
+document.getElementById(
+"tab-battles"
+);
+
+if(!el)return;
+
+el.innerHTML=`
+
+<h2 style="margin-bottom:20px">
+Live Battles
+</h2>
+
+${Array.from(
+{length:15},
+
+()=>`
+
+<div style="
+padding:15px;
+background:#111;
+margin-bottom:10px;
+border-radius:12px;
+border:1px solid #222;
+">
+
+⚔️
+${randomPlayerName()}
+
+vs
+
+${randomPlayerName()}
+
+<br><br>
+
+💰 Pot:
+$${Math.floor(
+Math.random()*10000
+)}
+
+</div>
+
+`
+
+).join("")}
+
+`;
+
+}
+
+
+function loadUpgrades(){
+
+const el=
+document.getElementById(
+"tab-upgrades"
+);
+
+if(!el)return;
+
+el.innerHTML=`
+
+<h2 style="
+margin-bottom:20px
+">
+
+Item Upgrades
+
+</h2>
+
+<div style="
+padding:15px;
+background:#111;
+border-radius:12px;
+">
+
+🎲 Upgrade chance:
+45%
+
+<br><br>
+
+<button onclick="toast(
+'Upgrade Started',
+'success'
+)">
+
+Upgrade Item
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+// overwrite tab system
+const oldShowTab=
+showTab;
+
+showTab=function(tab){
+
+oldShowTab(tab);
+
+if(
+tab==="leaderboard"
+){
+
+buildLeaderboard();
+
+}
+
+if(
+tab==="battles"
+){
+
+loadBattles();
+
+}
+
+if(
+tab==="upgrades"
+){
+
+loadUpgrades();
+
+}
+
+};
+
+
+// auto create leaderboard container
+document.addEventListener(
+"DOMContentLoaded",
+()=>{
+
+const tab=
+document.getElementById(
+"tab-leaderboard"
+);
+
+if(
+tab &&
+!document.getElementById(
+"leaderboard-grid"
+)
+){
+
+tab.innerHTML=
+'<div id="leaderboard-grid"></div>';
+
+}
+
+});
